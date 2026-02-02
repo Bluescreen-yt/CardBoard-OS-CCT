@@ -1,0 +1,7 @@
+{
+    "Packages":[
+        "CardBoardOs-Kernel",
+        "CardBoardOs-StickerBios",
+        "CardBoardOs-CardShell"
+    ]
+}
