@@ -37,7 +37,7 @@ function Render.GetPixelColor(PixelBufer, x, y)
     return nil
 end
 
-function Render.BlitRaw(PixelBufer)
+function Render.CharBased(PixelBufer)
     for y=1, #PixelBufer, 3 do
         for x=1, #PixelBufer[y], 2 do
             local colors = {}
@@ -69,4 +69,9 @@ function Render.BlitRaw(PixelBufer)
             colors['1'] = Render.GetPixelColor(PixelBufer, x, y)
         end
     end
+
+end
+
+function Render.BlitRaw(RenderMethod, PixelBufer)
+
 end
