@@ -8,6 +8,11 @@
 
 local CharBasedRender = {}
 
+CharBasedRender.dev = true
+function CharBasedRender.debug( ... )
+    if CharBasedRender.dev then print( ... ) end
+end
+
 CharBasedRender.CharList = {
     ["000000"]=128,
     ["100000"]=129,
@@ -45,13 +50,14 @@ CharBasedRender.CharList = {
     ["011110"]=158,
     ["111110"]=159
 }
-function CharBasedRender.find(table, value)
-    for i, v in ipairs(table) do
-        if v == value then
-            return i
+function CharBasedRender.findInTable(table, value)
+    for key, val in pairs(table) do
+        CharBasedRender.debug(key, value)
+        if val==value then
+            return key
         end
     end
-    return nil
+    return 0
 end
 
 function CharBasedRender.GetPixelColor(PixelBufer, x, y)
@@ -96,58 +102,87 @@ CharBasedRender.colors = {
 }
 
 function CharBasedRender.FindNearestColorIDX(colorFrom, colorsList)
-    local ColorOneIDX = CharBasedRender.find(CharBasedRender.colors, colorsList[1])
-    local ColorTwoIDX = CharBasedRender.find(CharBasedRender.colors, colorsList[2])
-    local ColorFromIDX = CharBasedRender.find(CharBasedRender.colors, colorFrom)
+    print(CharBasedRender.findInTable(colorsList, 0))
 
-    local ColorTwoIDXDistance = math.abs(ColorTwoIDX-ColorFromIDX)
-    local ColorOneIDXDistance = math.abs(ColorOneIDX-ColorFromIDX)
+    -- local ColorOneIDX = CharBasedRender.find(CharBasedRender.colors, colorsList[1])
+    -- local ColorTwoIDX = CharBasedRender.find(CharBasedRender.colors, colorsList[2])
+    -- local ColorFromIDX = CharBasedRender.find(CharBasedRender.colors, colorFrom)
 
-    if math.min(ColorTwoIDXDistance, ColorOneIDXDistance) == ColorOneIDXDistance then
-        return 1
-    else
-        return 2
-    end
+    -- local ColorTwoIDXDistance = math.abs(ColorTwoIDX-ColorFromIDX)
+    -- local ColorOneIDXDistance = math.abs(ColorOneIDX-ColorFromIDX)
+
+    -- if math.min(ColorTwoIDXDistance, ColorOneIDXDistance) == ColorOneIDXDistance then
+    --     return 0
+    -- else
+    --     return 1
+    -- end
     
+    return '0'
 end
 
 function CharBasedRender.Render(PixelBufer)
     for y=1, #PixelBufer, 3 do
         for x=1, #PixelBufer[y], 2 do
+            CharBasedRender.debug(x,y, '-- Char --')
 
             -- for every char 2x3 in pixels
 
             local colors = {} -- color1:1   color2:2
-            local colorsReverse = {}
             local CharPixels = {}
             local MonochromePixelPatern = {} -- 6 digits binnary used to find character
 
-            for y_height_char=1, 6 do  -- every pixel in character space 2x3 CharPixels
+            for y_height_char=1, 3 do  -- every pixel in character space 2x3 CharPixels
                 for x_width_char=1, 2 do
+                    CharBasedRender.debug(y_height_char, x_width_char, 'Adding pixel to CharPixels')
                     table.insert(CharPixels, CharBasedRender.GetPixelColor(PixelBufer, x_width_char+x, y_height_char+y))
                 end
             end
 
             local LastColor = '0' -- last checked color id
-            for pxl in pairs(CharPixels) do
+            for _, pxl in ipairs(CharPixels) do -- FOR every pixel..
+                
                 local FinalChar = 1
+
+                CharBasedRender.debug(pxl, '-- pixel --')
                 
                 if colors[pxl] then -- if pixel is already in colors
                     FinalChar = colors[pxl] -- set FinalChar to id of color
+                    CharBasedRender.debug('ALREADY EXISTS', '-- pixel --')
 
                 elseif #colors<2 then -- if not in colors and there is empty space (max 2) then add current color
-                    colorsReverse[#colors+1] = pxl
-                    colors[pxl] = #colors+1 -- set color in colors to id
+                    colors[pxl] = tostring(#colors) -- set color in colors to id
                     FinalChar = colors[pxl] -- get id
+                    CharBasedRender.debug('DOESNT EXISTS', '-- pixel --')
 
                 else
-                    FinalChar = CharBasedRender.FindNearestColorIDX(pxl, colorsReverse) -- nearest color id
+                    CharBasedRender.debug('MORE THAN 2 COLORS ON SAME CHAR', '-- pixel --')
+                    FinalChar = CharBasedRender.FindNearestColorIDX(pxl, colors) -- nearest color id
                 end
+
+                CharBasedRender.debug(FinalChar, '-- pixel --')
 
                 table.insert(MonochromePixelPatern, FinalChar) -- add final char to paterns
             end
 
-            term.write(CharBasedRender.FindChar(table.concat(MonochromePixelPatern, '')))
+            local char = CharBasedRender.FindChar(table.concat(MonochromePixelPatern, ''))
+
+            local fliped = char[2]
+            char = char[1]
+
+            CharBasedRender.debug(char, table.concat(MonochromePixelPatern, ''))
+            char = string.char(char)
+
+            if fliped then
+                backGround = tostring(CharBasedRender.findInTable(colors, '0'))
+                foreGround = tostring(CharBasedRender.findInTable(colors, '1'))
+            else
+                backGround = tostring(CharBasedRender.findInTable(colors, '1'))
+                foreGround = tostring(CharBasedRender.findInTable(colors, '0'))
+            end
+
+            CharBasedRender.debug(char, backGround, foreGround, type(char), type(backGround), type(foreGround), '-- CHAR AND BG AND FG')
+
+            term.blit(char, foreGround, backGround)
 
         end
     end
