@@ -8,7 +8,7 @@
 
 local CharBasedRender = {}
 
-CharBasedRender.dev = true
+CharBasedRender.dev = false
 function CharBasedRender.debug( ... )
     if CharBasedRender.dev then print( ... ) end
 end
@@ -102,7 +102,7 @@ CharBasedRender.colors = {
 }
 
 function CharBasedRender.FindNearestColorIDX(colorFrom, colorsList)
-    print(CharBasedRender.findInTable(colorsList, 0))
+    --print(CharBasedRender.findInTable(colorsList, 0))
 
     -- local ColorOneIDX = CharBasedRender.find(CharBasedRender.colors, colorsList[1])
     -- local ColorTwoIDX = CharBasedRender.find(CharBasedRender.colors, colorsList[2])
@@ -128,6 +128,7 @@ function CharBasedRender.Render(PixelBufer)
             -- for every char 2x3 in pixels
 
             local colors = {} -- color1:1   color2:2
+            local ColorsCount = 1
             local CharPixels = {}
             local MonochromePixelPatern = {} -- 6 digits binnary used to find character
 
@@ -139,9 +140,10 @@ function CharBasedRender.Render(PixelBufer)
             end
 
             local LastColor = '0' -- last checked color id
-            for _, pxl in ipairs(CharPixels) do -- FOR every pixel..
-                
-                local FinalChar = 1
+            for idx=1, 6 do -- FOR every pixel.. (6)
+                local pxl = CharPixels[idx] or '0'
+            
+                local FinalChar = '0'
 
                 CharBasedRender.debug(pxl, '-- pixel --')
                 
@@ -149,10 +151,11 @@ function CharBasedRender.Render(PixelBufer)
                     FinalChar = colors[pxl] -- set FinalChar to id of color
                     CharBasedRender.debug('ALREADY EXISTS', '-- pixel --')
 
-                elseif #colors<2 then -- if not in colors and there is empty space (max 2) then add current color
-                    colors[pxl] = tostring(#colors) -- set color in colors to id
+                elseif ColorsCount<2 then -- if not in colors and there is empty space (max 2) then add current color
+                    colors[pxl] = tostring(ColorsCount) -- set color in colors to id
+                    ColorsCount = ColorsCount + 1
                     FinalChar = colors[pxl] -- get id
-                    CharBasedRender.debug('DOESNT EXISTS', '-- pixel --')
+                    CharBasedRender.debug('DOESNT EXISTS', '-- pixel --', #colors, FinalChar, pxl, '--ADDED--', colors[pxl])
 
                 else
                     CharBasedRender.debug('MORE THAN 2 COLORS ON SAME CHAR', '-- pixel --')
@@ -173,11 +176,11 @@ function CharBasedRender.Render(PixelBufer)
             char = string.char(char)
 
             if fliped then
-                backGround = tostring(CharBasedRender.findInTable(colors, '0'))
-                foreGround = tostring(CharBasedRender.findInTable(colors, '1'))
-            else
                 backGround = tostring(CharBasedRender.findInTable(colors, '1'))
                 foreGround = tostring(CharBasedRender.findInTable(colors, '0'))
+            else
+                backGround = tostring(CharBasedRender.findInTable(colors, '0'))
+                foreGround = tostring(CharBasedRender.findInTable(colors, '1'))
             end
 
             CharBasedRender.debug(char, backGround, foreGround, type(char), type(backGround), type(foreGround), '-- CHAR AND BG AND FG')
@@ -185,6 +188,7 @@ function CharBasedRender.Render(PixelBufer)
             term.blit(char, foreGround, backGround)
 
         end
+        print()
     end
 
 end

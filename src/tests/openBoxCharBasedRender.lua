@@ -15,10 +15,10 @@ table.insert(Tests, { cbr.Render, {{
 -- check.RunTests(Tests)
 
 cbr.Render({
-    {'a','a','a','a'},
-    {'a','a','a','a'},
-    {'a','a','a','a'},
-    {'a','a','a','a'},
-    {'a','a','a','a'},
-    {'a','a','a','a'}
+    {'b','a','a','a'},
+    {'a','b','a','a'},
+    {'a','a','b','a'},
+    {'a','a','a','b'},
+    {'b','a','b','a'},
+    {'a','b','a','a'}
 })
