@@ -8,7 +8,7 @@
 
 local CharBasedRender = {}
 
-CharBasedRender.dev = false
+CharBasedRender.dev = true
 function CharBasedRender.debug( ... )
     if CharBasedRender.dev then print( ... ) end
 end
