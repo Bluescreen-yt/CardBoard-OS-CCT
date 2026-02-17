@@ -8,7 +8,7 @@
 
 local CharBasedRender = {}
 
-CharBasedRender.dev = true
+CharBasedRender.dev = false
 function CharBasedRender.debug( ... )
     if CharBasedRender.dev then print( ... ) end
 end
@@ -19,7 +19,8 @@ CharBasedRender.CharList = {
     ["010000"]=130,
     ["110000"]=131,
     ["001000"]=132,
-    ["101000"]=134,
+    ["101000"]=133,
+    ["011000"]=134,
     ["111000"]=135,
 
     ["000100"]=136,
@@ -57,7 +58,7 @@ function CharBasedRender.findInTable(table, value)
             return key
         end
     end
-    return 0
+    return nil
 end
 
 function CharBasedRender.GetPixelColor(PixelBufer, x, y)
@@ -65,6 +66,7 @@ function CharBasedRender.GetPixelColor(PixelBufer, x, y)
     if Y then
         return Y[x]
     end
+    CharBasedRender.debug('Y POS too big')
     return nil
 end
 
@@ -135,15 +137,19 @@ function CharBasedRender.Render(PixelBufer)
             for y_height_char=1, 3 do  -- every pixel in character space 2x3 CharPixels
                 for x_width_char=1, 2 do
                     CharBasedRender.debug(y_height_char, x_width_char, 'Adding pixel to CharPixels')
-                    table.insert(CharPixels, CharBasedRender.GetPixelColor(PixelBufer, x_width_char+x, y_height_char+y))
+                    local _ = CharBasedRender.GetPixelColor(PixelBufer, x_width_char+x, y_height_char+y)
+                    table.insert(CharPixels, _ or '0')
+
+                    CharBasedRender.debug(CharBasedRender.GetPixelColor(PixelBufer, x_width_char+x, y_height_char+y), '---get pixels--')
+                    CharBasedRender.debug(table.concat(CharPixels, ''), '--PIXELS--')
                 end
             end
 
             local LastColor = '0' -- last checked color id
             for idx=1, 6 do -- FOR every pixel.. (6)
-                local pxl = CharPixels[idx] or '0'
+                local pxl = CharPixels[idx] or 'a'
             
-                local FinalChar = '0'
+                local FinalChar = 'b'
 
                 CharBasedRender.debug(pxl, '-- pixel --')
                 
@@ -162,7 +168,8 @@ function CharBasedRender.Render(PixelBufer)
                     FinalChar = CharBasedRender.FindNearestColorIDX(pxl, colors) -- nearest color id
                 end
 
-                CharBasedRender.debug(FinalChar, '-- pixel --')
+                CharBasedRender.debug(FinalChar, '-- pixel -- ID')
+                CharBasedRender.debug(table.concat(CharPixels, ''), '--PIXELS--')
 
                 table.insert(MonochromePixelPatern, FinalChar) -- add final char to paterns
             end
@@ -172,15 +179,17 @@ function CharBasedRender.Render(PixelBufer)
             local fliped = char[2]
             char = char[1]
 
-            CharBasedRender.debug(char, table.concat(MonochromePixelPatern, ''))
+            CharBasedRender.debug(CharBasedRender.findInTable(colors, '1') or 'NONE', CharBasedRender.findInTable(colors, '2') or 'NONE' ,'--colors--')
+
+            CharBasedRender.debug(char, table.concat(MonochromePixelPatern), '')
             char = string.char(char)
 
             if fliped then
-                backGround = tostring(CharBasedRender.findInTable(colors, '1'))
-                foreGround = tostring(CharBasedRender.findInTable(colors, '0'))
+                backGround = tostring(CharBasedRender.findInTable(colors, '2') or 0)
+                foreGround = tostring(CharBasedRender.findInTable(colors, '1') or 0)
             else
-                backGround = tostring(CharBasedRender.findInTable(colors, '0'))
-                foreGround = tostring(CharBasedRender.findInTable(colors, '1'))
+                backGround = tostring(CharBasedRender.findInTable(colors, '1') or 0)
+                foreGround = tostring(CharBasedRender.findInTable(colors, '2') or 0)
             end
 
             CharBasedRender.debug(char, backGround, foreGround, type(char), type(backGround), type(foreGround), '-- CHAR AND BG AND FG')
