@@ -1,7 +1,7 @@
-[! [Discord] [Discord-shield] ] [Discord-link]
-[! [Contributors] [Contributors-shield] ]
-[! [[LastCommit]] [[LastCommit-shield]] ]
-[! [[Computercraft-os]] [[ComputerCraftOs-Shield]] ]
+[![Discord][Discord-shield]][Discord-link]
+![][Contributors-shield]
+![][LastCommit-shield]
+![][ComputerCraftOs-Shield]
 
 
 Hello there Dear developers / users! <br>
