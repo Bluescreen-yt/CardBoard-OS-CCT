@@ -1,0 +1,5 @@
+# png -> UIF ( Universal Image Format )
+# mp3 -> UAF ( Universal Audio Format)
+# obj -> UMF ( Universal Model Format )
+# svg -> USVIF ( Universal Scalable Vector Image Format )
+# iso -> UDTI ( Universal Directory Tree Image )
