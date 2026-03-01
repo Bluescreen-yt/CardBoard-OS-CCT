@@ -50,6 +50,8 @@ function AdvSandbox:EmulateCraftOsGlobals()
         return WrapedFile
     end
 
+
+    FakeGlobals._G = FakeGlobals
     
     self.SS:SetGlobals(FakeGlobals)
 end
