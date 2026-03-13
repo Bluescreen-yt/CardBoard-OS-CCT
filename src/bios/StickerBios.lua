@@ -5,7 +5,6 @@ BIOS.info.version = '0.1 test'
 BIOS.info.vid = 0
 BIOS.BootFiles = {}
 BIOS.Bootables = {
-    {file='CC', name='Craft-os'}
 }
 
 function ScanRecursive(dir)
@@ -53,6 +52,9 @@ for _, file in pairs(BIOS.BootFiles) do
 
     table.insert(BIOS.Bootables, BootableData)
 end
+
+
+table.insert(BIOS.Bootables, {file='CC', name='Craft-os'})
 
 local Cursor = 1
 local keyname
