@@ -169,5 +169,29 @@ label.Alphabet = {
         "    ",
         "    ",
         " #  "
+    },
+    [" "] = {
+        "    ",
+        "    ",
+        "    ",
+        "    "
     }
 }
+
+
+function label.new(text)
+    local self = setmetatable({}, label)
+    self.Text = text
+    return self
+end
+
+function label:render()
+    local Rendered = {"", "", "", ""}
+end
+
+
+
+
+
+
+
