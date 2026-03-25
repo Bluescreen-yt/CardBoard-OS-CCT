@@ -1,1 +1,0 @@
-cp src/* ./computers/0/ -r
