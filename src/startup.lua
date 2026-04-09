@@ -1,1 +1,1 @@
-require "bios.StickerBios"
+require "bootloader.StickerBoot"

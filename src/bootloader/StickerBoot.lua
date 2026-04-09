@@ -1,10 +1,10 @@
-local BIOS = {}
-BIOS.info = {}
+local SBL = {}
+SBL.info = {}
 
-BIOS.info.version = '0.1 test'
-BIOS.info.vid = 0
-BIOS.BootFiles = {}
-BIOS.Bootables = {
+SBL.info.version = '0.1 test'
+SBL.info.vid = 0
+SBL.BootFiles = {}
+SBL.Bootables = {
 }
 
 function ScanRecursive(dir)
@@ -34,14 +34,14 @@ end
 
 for _, obj in pairs(ScanRecursive('/')) do
     
-    table.insert(BIOS.BootFiles, obj)
+    table.insert(SBL.BootFiles, obj)
 end
 
 print()
 print('Found: ')
 
 
-for _, file in pairs(BIOS.BootFiles) do
+for _, file in pairs(SBL.BootFiles) do
     local path = file.dir..'/'..file.file
     print(path)
     local File = fs.open(path, 'r')
@@ -50,11 +50,11 @@ for _, file in pairs(BIOS.BootFiles) do
     File.close()
     print(file.file, ' >>> ', BootableData.name)
 
-    table.insert(BIOS.Bootables, BootableData)
+    table.insert(SBL.Bootables, BootableData)
 end
 
 
-table.insert(BIOS.Bootables, {file='CC', name='Craft-os'})
+table.insert(SBL.Bootables, {file='CC', name='Craft-os'})
 
 local Cursor = 1
 local keyname
@@ -63,7 +63,7 @@ while true do
     term.clear()
     term.setCursorPos(1, 2)
 
-    print('Welcome to Sticker bios! version '.. BIOS.info.version)
+    print('Welcome to Sticker Bootloader! version '.. SBL.info.version)
     print('Please select OS / file to boot to')
     print()
 
@@ -72,14 +72,14 @@ while true do
     elseif keyname == 'down' then
         Cursor = Cursor + 1
     elseif keyname == 'enter' then
-        local File = BIOS.Bootables[Cursor].file
+        local File = SBL.Bootables[Cursor].file
 
         term.clear()
         if File == 'CC' then
             break
         else
 
-            local FilePath = BIOS.BootFiles[Cursor-1].dir .. File
+            local FilePath = SBL.BootFiles[Cursor].dir .. File
             print('Running: ', FilePath)
             local FileFS = fs.open(FilePath, 'r')
             
@@ -93,9 +93,9 @@ while true do
         break
     end
 
-    Cursor = (Cursor-1)%(#BIOS.Bootables) +1
+    Cursor = (Cursor-1)%(#SBL.Bootables) +1
 
-    for _, Option in pairs(BIOS.Bootables) do
+    for _, Option in pairs(SBL.Bootables) do
         local X, Y = term.getSize()
         local Dif = math.floor((Y/1.5)-4)
 
@@ -107,7 +107,7 @@ while true do
                 term.setTextColor(colors.black)
                 term.setBackgroundColor(colors.white)
             end
-            local MSG = Option.name -- .. ' - ' .. tostring(BIOS.BootFiles[Cursor-1])
+            local MSG = Option.name -- .. ' - ' .. tostring(SBL.BootFiles[Cursor-1])
             term.write(MSG .. string.rep(' ', math.max(0, X-#MSG)))
             print()
             term.setTextColor(colors.white)
