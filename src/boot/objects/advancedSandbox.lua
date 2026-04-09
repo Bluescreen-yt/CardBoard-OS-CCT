@@ -1,6 +1,6 @@
 local AdvSandbox = {}
-local __simpleSandbox = require('simpleSandbox')
-local __objUtils = require('objUtil')
+local __simpleSandbox = require('boot.objects.simpleSandbox')
+local __objUtils = require('boot.objects.objUtil')
 
 AdvSandbox.__index = AdvSandbox
 
