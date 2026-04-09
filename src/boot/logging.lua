@@ -1,8 +1,10 @@
 local logging = {}
 
+logging.logDirPath = "/logs/kernel/"
+logging.logFilePath = logging.logDirPath.."logs.txt"
 
 function logging.new()
-    local LogFile = fs.open("/boot/logs/logs.txt", "w")
+    local LogFile = fs.open(logging.logFilePath, "w")
     logging.started = os.time()
 
     LogFile.write("logging started! "..logging.GetStamp())
@@ -28,16 +30,16 @@ function logging.finish()
     --logging.print('logging', string.format('work time: %02d:%02d:%02d', hours, minutes, seconds))
 
 
-    fs.copy('/boot/logs/logs.txt', '/boot/logs/logs-'..logging.GetStamp()..'.txt')
+    fs.copy(logging.logFilePath, logging.logDirPath..'log-'..logging.GetStamp()..'.txt')
 end
 
 function logging.log(pre, post, str)
     local fileContent
-    local lfr = fs.open('/boot/logs/logs.txt', 'r')
+    local lfr = fs.open(logging.logFilePath, 'r')
     fileContent = lfr.readAll()
     lfr.close()
 
-    local lf = fs.open('/boot/logs/logs.txt', 'w')
+    local lf = fs.open(logging.logFilePath, 'w')
     lf.write(fileContent .. '\n' .. pre .. str .. post)
     lf.close()
 end

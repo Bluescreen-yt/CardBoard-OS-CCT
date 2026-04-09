@@ -14,10 +14,11 @@ please read this file first.
 > 
 > <a href="#1-introduction">1. Introduction</a> <br>
 > <a href="#2-changelogs">2. Changelogs</a> <br>
-> <a href="#3-how-to-install">4. how to install</a> <br>
-> <a href="#4-for-new-devs">5. for new devs</a> <br>
-> <a href="#5-under-the-hood-of-cardboard-os">6. Under the hood of cardboard os </a> <br>
-> <a href="#6-planned-features">7. planned features</a>
+> <a href="#3-how-to-install">3. how to install</a> <br>
+> <a href="#4-for-new-devs">4. for new devs</a> <br>
+> <a href="#5-under-the-hood-of-cardboard-os">5. Under the hood of cardboard os </a> <br>
+> <a href="#6-planned-features">6. planned features</a>
+> <a href="#7-default-config">7. Default config</a>
 
 ---
 # 2. Changelogs
@@ -41,6 +42,11 @@ please read this file first.
 
 ---
 # 6. planned features
+
+### W.I.P
+
+---
+# 7. Default config
 
 ### W.I.P
 

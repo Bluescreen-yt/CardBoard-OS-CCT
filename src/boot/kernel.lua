@@ -4,14 +4,14 @@ KernelInfo.version = 0.01
 
 print('Hello! welcome to cardboard box kernel version '..KernelInfo.version)
 print('')
-print('please click r to enter repair / toolkit menu')
-local event, key, is_held = os.pullEvent("key")
-if keys.getName(key) == 'r' then
-    return nil
-end
+-- print('please click r to enter repair / toolkit menu')
+-- local event, key, is_held = os.pullEvent("key")
+-- if keys.getName(key) == 'r' then
+--     return nil
+-- end
 
 -- kernel sub files
-Logging = require( 'boot/logging' )
+Logging = require( 'boot.logging' )
 Logging.new()
 
 KC = require( 'boot/crashHandle' )

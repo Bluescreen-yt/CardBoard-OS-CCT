@@ -81,12 +81,13 @@ while true do
 
             local FilePath = SBL.BootFiles[Cursor].dir .. File
             print('Running: ', FilePath)
-            local FileFS = fs.open(FilePath, 'r')
+            require(string.match(FilePath, "^(.*).lua$"))
+            -- local FileFS = fs.open(FilePath, 'r')
             
-            local Executable = load(FileFS.readAll())
-            Executable()
+            -- local Executable = load(FileFS.readAll())
+            -- Executable()
 
-            os.shutdown()
+            -- os.shutdown()
         end
 
 
