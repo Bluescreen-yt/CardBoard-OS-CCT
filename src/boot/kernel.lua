@@ -40,6 +40,9 @@ KernelData.Files = {}
 
 KernelData.CBGlobals = {}
 KernelData.CBGlobals.NotCraftOsGlobals = true
+KernelData.CBGlobals.require = function (script) -- custom require func since it doesnt exist while using load() [REQUIRED FOR CUTSTOM GLOBALS]
+    
+end
 
 function LoadCustomGlobalObjects()
     Logging.print('Kernel > LoadCustomGlobalObjects', "__ global objects __")
