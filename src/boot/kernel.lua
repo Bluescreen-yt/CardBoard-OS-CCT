@@ -135,6 +135,7 @@ function __tick()
     KC.kernelCCall(Hardware.checkHardware, 9)
     --KC.kernelCCall(Procsess.tick(), 10)
 
+    coroutine.yield()
     Logging.print('Kernel > __tick', 'Ended')
 end
 
